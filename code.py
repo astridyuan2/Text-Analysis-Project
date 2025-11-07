@@ -1,13 +1,49 @@
-import urllib.request
 
-def main():
-    url = 'https://www.gutenberg.org/cache/epub/730/pg730.txt'
-    try:
-        with urllib.request.urlopen(url) as f:
-            text = f.read().decode('utf-8')
-            print(text) # for testing
-    except Exception as e:
-        print("An error occurred:", e)
+from mediawiki import MediaWiki
 
-if __name__ == "__main__":
-    main()
+wikipedia = MediaWiki()
+babson = wikipedia.page("Babson College")
+print(babson.title)
+print(babson.content)
+
+import re
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from newsapi import NewsApiClient
+
+# Init
+newsapi = NewsApiClient(api_key='API_KEY')
+
+# /v2/top-headlines
+top_headlines = newsapi.get_top_headlines(q='bitcoin',
+                                          sources='bbc-news,the-verge',
+                                          category='business',
+                                          language='en',
+                                          country='us')
+
+# /v2/everything
+all_articles = newsapi.get_everything(q='bitcoin',
+                                      sources='bbc-news,the-verge',
+                                      domains='bbc.co.uk,techcrunch.com',
+                                      from_param='2017-12-01',
+                                      to='2017-12-12',
+                                      language='en',
+                                      sort_by='relevancy',
+                                      page=2)
+
+# /v2/top-headlines/sources
+sources = newsapi.get_sources()
