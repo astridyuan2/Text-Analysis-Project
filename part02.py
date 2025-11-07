@@ -38,8 +38,6 @@ def tokenize(text):
 
 
 
-
-
 ### Part 2.2 Stopword Removal
 def load_stopwords():
     """
