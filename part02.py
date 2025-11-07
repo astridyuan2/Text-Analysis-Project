@@ -43,8 +43,8 @@ def tokenize(text):
 ### Part 2.2 Stopword Removal
 def load_stopwords():
     """
-    Load English stopwords from NLTK and return as a list.
-    (No local files needed.)
+    Load NLTK English stopwords and return them as a list.
+    We convert to lowercase to match our tokenized text.
     """
     import nltk
     from nltk.corpus import stopwords as nltk_stopwords
@@ -60,6 +60,7 @@ def remove_stopwords(tokens, stopwords_list):
         if t not in stopwords_list:   # list-based membership check
             cleaned.append(t)
     return cleaned
+
 
 
 ### Pipeline step for part 2
@@ -82,9 +83,8 @@ def clean_and_tokenize():
     # Tokenize text into lowercase alphabetic words
     tokens = tokenize(combined_text)
 
-    # Load stopwords list (not a set — matches what your class learned)
-    stopwords_list = load_stopwords("data/stopwords.txt")
-
+    # Load stopwords list 
+    stopwords_list = load_stopwords()
     # Remove stopwords using list-based membership check
     cleaned_tokens = remove_stopwords(tokens, stopwords_list)
 
