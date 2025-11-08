@@ -129,7 +129,7 @@ def run_frequency_test():
     print("\nTop 20 Most Frequent Words (after cleaning + stopwords removed):\n")
     print_most_common(hist, num=20)
 
-run_frequency_test()
+# run_frequency_test()
 
 
 
@@ -221,8 +221,8 @@ def run_tfidf():
     print_top_tfidf(tfidf_list, num=10)
 
 
-# Run it:
-run_tfidf()
+# # Run it:
+# run_tfidf()
 
 
 
@@ -313,8 +313,8 @@ def run_summary_statistics():  # - consulted by ChatGPT
         print(f"{title:30}  {sample}")
 
 
-# Run Part 4
-run_summary_statistics()
+# # Run Part 4
+# run_summary_statistics()
 
 
 
@@ -350,8 +350,8 @@ def visualize_top_words_per_document(k=10):
         ascii_bar_chart(top_words, width=40)
 
 
-# Run the visualization
-visualize_top_words_per_document(k=10)
+# # Run the visualization
+# visualize_top_words_per_document(k=10)
 
 
 
@@ -432,7 +432,7 @@ def run_visualizations():
     # 3) Word cloud
     plot_wordcloud_from_hist(hist, outpath="data/visuals/wordcloud.png")
 
-run_visualizations()
+# run_visualizations()
 
 
 # ========= OPTIONAL TECHNIQUE: SENTIMENT ANALYSIS (VADER) =========
@@ -463,8 +463,8 @@ def run_sentiment_analysis(): # - consulted by ChatGPT
         print(f"{title:35}  Sentiment Score = {score:.4f}")
 
 
-# Run optional step:
-run_sentiment_analysis()
+# # Run optional step:
+# run_sentiment_analysis()
 
 
 def main():
