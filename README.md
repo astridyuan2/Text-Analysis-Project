@@ -24,6 +24,12 @@ One design decision I made was to store all the Wikipedia page titles in a singl
 ## 3. Results (~1-3 paragraphs + figures/examples)
 After cleaning and tokenizing the four articles, I ran word frequency analysis to identify the most common terms across the combined corpus. Unsurprisingly, the words “climate,” “change,” “warming,” and “global” appeared most frequently, reflecting how central these concepts are to the broader climate discourse. However, the frequency charts also revealed thematic differences among the pages. For example, the Fossil fuel industry page emphasized terms like “fossil,” “fuels,” “oil,” and “coal,” while the Environmental movement page highlighted “pollution,” “conservation,” and “nuclear.” These differences align well with the distinct focus and goals of each page.
 
+To move beyond raw frequency and identify the unique thematic focus of each article, I calculated TF-IDF scores. This approach proved highly effective:
+
+    The Fossil Fuel Industry page was characterized by technical and economic language, with high TF-IDF scores for terms like “petroleum,” “inflation,” “fuel,” and “burning.”
+    In contrast, the Global Warming Controversy article was distinguished by its focus on scientific discourse, featuring elevated scores for words such as “debates,” “controversies,” “discrepancies,” and “apparent.”
+    The Environmental Movement page, as expected, emphasized terms like “smoke,” “conservation,” and “tree.”
+    This analysis confirms that while these articles share a common topical domain, their specific narratives are framed through distinct and specialized vocabularies. The TF-IDF metric successfully illuminated these unique thematic emphases.
 ![wordcloud](data/outputs/wordcloud.png)
 ![Top 20 ASCII](data/outputs/Top%2020%20(ASCII).png)
 ![Sentiment Analysis](data/outputs/Sentiment%20Analysis.png)
