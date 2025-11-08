@@ -22,22 +22,32 @@ One design decision I made was to store all the Wikipedia page titles in a singl
 
 
 ## 3. Results (~1-3 paragraphs + figures/examples)
+![Top 10 Words](data/outputs/Top%2010%20words.png)
+![Top 20 ASCII](data/outputs/Top%2020%20(ASCII).png)
 After cleaning and tokenizing the four articles, I ran word frequency analysis to identify the most common terms across the combined corpus. Unsurprisingly, the words “climate,” “change,” “warming,” and “global” appeared most frequently, reflecting how central these concepts are to the broader climate discourse. However, the frequency charts also revealed thematic differences among the pages. For example, the Fossil fuel industry page emphasized terms like “fossil,” “fuels,” “oil,” and “coal,” while the Environmental movement page highlighted “pollution,” “conservation,” and “nuclear.” These differences align well with the distinct focus and goals of each page.
 
+
+![tfidf](data/outputs/tfidf.png)
 To move beyond raw frequency and identify the unique thematic focus of each article, I calculated TF-IDF scores. This approach proved highly effective:
 
     The Fossil Fuel Industry page was characterized by technical and economic language, with high TF-IDF scores for terms like “petroleum,” “inflation,” “fuel,” and “burning.”
     In contrast, the Global Warming Controversy article was distinguished by its focus on scientific discourse, featuring elevated scores for words such as “debates,” “controversies,” “discrepancies,” and “apparent.”
     The Environmental Movement page, as expected, emphasized terms like “smoke,” “conservation,” and “tree.”
     This analysis confirms that while these articles share a common topical domain, their specific narratives are framed through distinct and specialized vocabularies. The TF-IDF metric successfully illuminated these unique thematic emphases.
+
+
 ![wordcloud](data/outputs/wordcloud.png)
-![Top 20 ASCII](data/outputs/Top%2020%20(ASCII).png)
-![Sentiment Analysis](data/outputs/Sentiment%20Analysis.png)
-![Top 10 Words](data/outputs/Top%2010%20words.png)
 ![Top 20 Bar](data/outputs/top20_bar.png)
-![Top 20 Bar](data/outputs/tfidf.png)
+I also generated a word cloud and bar chart of the top 20 words across the combined text. The visualizations clearly showed the dominance of climate-related terminology, but also highlighted the influence of policy and industry terms such as “carbon,” “emissions,” “energy,” and “countries.” These visual patterns helped summarize the dataset in a way that is easier to interpret compared to raw frequency tables.
+
+
+![Sentiment Analysis](data/outputs/Sentiment%20Analysis.png)
+Finally, as an optional extension, I performed sentiment analysis on each article. Interestingly, three of the articles — Climate change, Global warming controversy, and Environmental movement — had strongly positive sentiment scores, while the Fossil fuel industry article had a negative score. This suggests that the language framing fossil fuels tends to be more negatively associated (e.g., pollution, damage, emissions), while pages discussing climate action and environmental advocacy carry more constructive or urgent tones. Although sentiment analysis is very context-sensitive, the results align with typical public and academic attitudes toward these topics.
+
 
 ## 4. Reflection (~1-2 paragraphs)
-The Climate change and Environmental movement pages emphasize scientific and collective-action language, focusing on emissions, warming, and sustainability.
-The Fossil fuel industry page highlights corporate and economic terminology, such as operations, coal, and production.
-The Global warming controversy page uses argument- and debate-oriented vocabulary like skeptics, evidence, and consensus, indicating rhetorical struggle and ideological polarization.
+Overall, the project went well once I clearly separated the data collection (Part 1) from the text analysis steps (Part 2 and 3). The biggest challenge was actually selecting a meaningful topic. My original idea was to analyze Wikipedia pages about Penélope Cruz and Spanish cinema, but the language patterns there were not very distinctive or conceptually interesting. Switching to climate change–related pages made the analysis much stronger because the topics were more content-rich, and the differences across articles became clearer in both frequency analysis and TF-IDF scoring.
+
+I did encounter several technical issues during the workflow. At one point, my laptop froze while running code, the VS Code terminal output was blank, and I was unsure whether I should ask for an extension. Eventually, after restarting and re-configuring the environment, the code began running properly again. This reminded me how important it is to save intermediate outputs and design the pipeline so that each step can be re-run independently without re-fetching or re-downloading data. Saving the Wikipedia pages locally was especially useful in preventing repeated API delays.
+
+From a learning perspective, the biggest takeaway was realizing how similar text-processing workflows are across tools: the same concepts of tokenization, stopword removal, word frequencies, and TF-IDF that I used in R for Quantitative Machine Learning directly transferred into Python. AI tools also helped me translate ideas I already understood conceptually into Python implementations, especially when generating visualizations like the bar chart and word cloud. Going forward, I feel more confident about switching between programming environments and applying the same analytical logic with different libraries and languages.
