@@ -35,8 +35,7 @@ To move beyond raw frequency and identify the unique thematic focus of each arti
 ![Sentiment Analysis](data/outputs/Sentiment%20Analysis.png)
 ![Top 10 Words](data/outputs/Top%2010%20words.png)
 ![Top 20 Bar](data/outputs/top20_bar.png)
-
-
+![Top 20 Bar](data/outputs/tfidf.png)
 
 ## 4. Reflection (~1-2 paragraphs)
 The Climate change and Environmental movement pages emphasize scientific and collective-action language, focusing on emissions, warming, and sustainability.
