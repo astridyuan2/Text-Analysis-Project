@@ -22,6 +22,11 @@ One design decision I made was to store all the Wikipedia page titles in a singl
 
 
 ## 3. Results (~1-3 paragraphs + figures/examples)
+![Top 20 (ASCII)](data/outputs/Top%20%(ASCII).png)
+![text_clustering](data/outputs/text_clustering.png)
+![Sentiment Analysis](data/outputs/Sentiment%Analysis.png)
+![Top 10 words](data/outputs/Top%10%words.png)
+![top20_bar](data/outputs/top20_bar.png)
 
 ## 4. Reflection (~1-2 paragraphs)
 The Climate change and Environmental movement pages emphasize scientific and collective-action language, focusing on emissions, warming, and sustainability.
