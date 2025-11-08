@@ -467,5 +467,45 @@ def run_sentiment_analysis(): # - consulted by ChatGPT
 run_sentiment_analysis()
 
 
+def main():
+    """
+    entry point for Part 2:
+      1) cleaning + stopwords + frequency (required)
+      2) TF-IDF across documents (nice, still Part 2)
+      3) summary statistics (required)
+      4) at least one visualization (required)
+      5) optional technique (sentiment) — best effort
+    """
+    print("\n===== PART 2: CLEANING + FREQUENCY =====")
+    run_frequency_test()
+
+    print("\n===== PART 2: TF-IDF (per document) =====")
+    try:
+        run_tfidf()
+    except Exception as e:
+        print("[tfidf skipped]", e)
+
+    print("\n===== PART 4: SUMMARY STATISTICS =====")
+    try:
+        run_summary_statistics()
+    except Exception as e:
+        print("[summary stats skipped]", e)
+
+    print("\n===== PART 2.5: VISUALIZATION =====")
+    try:
+        run_visualizations()
+    except Exception as e:
+        print("[visualization skipped]", e)
+
+    print("\n===== OPTIONAL: SENTIMENT ANALYSIS (VADER) =====")
+    try:
+        run_sentiment_analysis()
+    except Exception as e:
+        print("[sentiment skipped]", e)
+
+
+if __name__ == "__main__":
+    main()
+
 
 
