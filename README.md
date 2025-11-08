@@ -30,10 +30,10 @@ After cleaning and tokenizing the four articles, I ran word frequency analysis t
 ![tfidf](data/outputs/tfidf.png)
 To move beyond raw frequency and identify the unique thematic focus of each article, I calculated TF-IDF scores. This approach proved highly effective:
 
-    The Fossil Fuel Industry page was characterized by technical and economic language, with high TF-IDF scores for terms like “petroleum,” “inflation,” “fuel,” and “burning.”
-    In contrast, the Global Warming Controversy article was distinguished by its focus on scientific discourse, featuring elevated scores for words such as “debates,” “controversies,” “discrepancies,” and “apparent.”
-    The Environmental Movement page, as expected, emphasized terms like “smoke,” “conservation,” and “tree.”
-    This analysis confirms that while these articles share a common topical domain, their specific narratives are framed through distinct and specialized vocabularies. The TF-IDF metric successfully illuminated these unique thematic emphases.
+The Fossil Fuel Industry page was characterized by technical and economic language, with high TF-IDF scores for terms like “petroleum,” “inflation,” “fuel,” and “burning.”
+In contrast, the Global Warming Controversy article was distinguished by its focus on scientific discourse, featuring elevated scores for words such as “debates,” “controversies,” “discrepancies,” and “apparent.”
+The Environmental Movement page, as expected, emphasized terms like “smoke,” “conservation,” and “tree.”
+This analysis confirms that while these articles share a common topical domain, their specific narratives are framed through distinct and specialized vocabularies. The TF-IDF metric successfully illuminated these unique thematic emphases.
 
 
 ![wordcloud](data/outputs/wordcloud.png)
