@@ -22,6 +22,7 @@ One design decision I made was to store all the Wikipedia page titles in a singl
 
 
 ## 3. Results (~1-3 paragraphs + figures/examples)
+
 ## 4. Reflection (~1-2 paragraphs)
 The Climate change and Environmental movement pages emphasize scientific and collective-action language, focusing on emissions, warming, and sustainability.
 The Fossil fuel industry page highlights corporate and economic terminology, such as operations, coal, and production.
