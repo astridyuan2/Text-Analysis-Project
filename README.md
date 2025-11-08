@@ -23,10 +23,20 @@ One design decision I made was to store all the Wikipedia page titles in a singl
 
 ## 3. Results (~1-3 paragraphs + figures/examples)
 ![Top 20 (ASCII)](data/outputs/Top%20%(ASCII).png)
-![text_clustering](data/outputs/text_clustering.png)
+After cleaning and tokenizing the four articles, I ran word frequency analysis to identify the most common terms across the combined corpus. Unsurprisingly, the words “climate,” “change,” “warming,” and “global” appeared most frequently, reflecting how central these concepts are to the broader climate discourse. However, the frequency charts also revealed thematic differences among the pages. For example, the Fossil fuel industry page emphasized terms like “fossil,” “fuels,” “oil,” and “coal,” while the Environmental movement page highlighted “pollution,” “conservation,” and “nuclear.” These differences align well with the distinct focus and goals of each page.
+
+![wordcloud](data/outputs/wordcloud.png)
+
+
 ![Sentiment Analysis](data/outputs/Sentiment%Analysis.png)
+
+
 ![Top 10 words](data/outputs/Top%10%words.png)
+
+
 ![top20_bar](data/outputs/top20_bar.png)
+
+
 
 ## 4. Reflection (~1-2 paragraphs)
 The Climate change and Environmental movement pages emphasize scientific and collective-action language, focusing on emissions, warming, and sustainability.
