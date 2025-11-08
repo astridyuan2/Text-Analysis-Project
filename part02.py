@@ -12,7 +12,7 @@ nltk.download("stopwords", quiet=True)
 word_pattern = re.compile(r"[a-zA-Z']+")
 
 def normalize_whitespace(text):
-    """collapse repeated spaces/newlines into single spaces (tidier tokens)"""
+    """collapse repeated spaces/newlines into single spaces"""
     return re.sub(r"\s+", " ", text).strip()
 
 def strip_brackets(text):
@@ -21,7 +21,7 @@ def strip_brackets(text):
 
 def drop_sections(text, section_heads=("references", "external links", "see also", "notes")):
     """
-    cut the article before trailing non-content sections (quick + crude)
+    cut the article before trailing non-content sections 
     looks for headings by keyword in a lowercase copy of the text
     """
     lower = text.lower()
@@ -33,7 +33,7 @@ def drop_sections(text, section_heads=("references", "external links", "see also
     return text[:cut]
 
 def tokenize(text):
-    """lowercase + extract alphabetic tokens (keeps apostrophes)"""
+    """lowercase + extract alphabetic tokens"""
     return word_pattern.findall(text.lower())
 
 
@@ -76,7 +76,7 @@ def clean_and_tokenize():
         text = normalize_whitespace(text) # collapse extra spaces/newlines
         pages.append(text)
 
-    # Combine all pages into one text corpus
+    # Combine all pages into one text corpus - Consulted ChatGPT to incorporate text mining knowledge from my QTM course
     combined_text = "\n".join(pages)
 
     # Tokenize text into lowercase alphabetic words
@@ -84,10 +84,10 @@ def clean_and_tokenize():
 
     # Load stopwords list 
     stopwords_list = load_stopwords()
-    # Remove stopwords using list-based membership check
+    # Remove stopwords using list-based membership check - consulted by ChatGPT
     cleaned_tokens = remove_stopwords(tokens, stopwords_list)
 
-    # Sanity check prints (useful for debugging/report screenshots)
+    # Sanity check 
     print("Total tokens before stopword removal:", len(tokens))
     print("Total tokens after stopword removal: ", len(cleaned_tokens))
     print("Sample cleaned tokens:", cleaned_tokens[:30])
@@ -108,7 +108,6 @@ def count_words(tokens):
 def most_common(hist):
     """
     Convert dict to list of (freq, word) pairs, sorted by frequency desc.
-    This matches the pattern taught in class.
     """
     items = []
     for word, freq in hist.items():
@@ -230,7 +229,7 @@ run_tfidf()
 
 
 
-### Part 2.4 Computing Summary Statistics
+### Part 2.4 Computing Summary Statistics 
 def document_tokens_separate():
     """
     Fetch + clean pages but KEEP each as a separate document.
@@ -248,7 +247,7 @@ def document_tokens_separate():
     return docs
 
 
-def top_k_words(tokens, k=20):
+def top_k_words(tokens, k=20): 
     """Return the top-k most frequent words in one list of tokens."""
     hist = {}
     for t in tokens:
@@ -285,7 +284,7 @@ def words_unique_to_document(all_docs):
     return unique_words
 
 
-def run_summary_statistics():
+def run_summary_statistics():  # - consulted by ChatGPT
     docs = document_tokens_separate()
 
     print("\n===== PART 4: SUMMARY STATISTICS =====\n")
@@ -358,7 +357,7 @@ visualize_top_words_per_document(k=10)
 
 
 
-### Advanced Visualizations with Matplotlib and WordCloud - consulted by ChatGPT
+### Advanced Visualizations with Matplotlib and WordCloud - consulted by ChatGPT and R code
 def ensure_dir(path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
 
@@ -434,3 +433,39 @@ def run_visualizations():
     plot_wordcloud_from_hist(hist, outpath="data/visuals/wordcloud.png")
 
 run_visualizations()
+
+
+# ========= OPTIONAL TECHNIQUE: SENTIMENT ANALYSIS (VADER) =========
+
+import nltk
+nltk.download("vader_lexicon", quiet=True)
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+def sentiment_scores(text): # - consulted by ChatGPT
+    """
+    Compute overall compound sentiment score (-1 to +1).
+    """
+    sid = SentimentIntensityAnalyzer()
+    return sid.polarity_scores(text)["compound"]
+
+
+def run_sentiment_analysis(): # - consulted by ChatGPT
+    print("\n===== OPTIONAL TECHNIQUE: SENTIMENT ANALYSIS =====\n")
+
+    for title in topics:
+        raw = fetch_page(title)
+        text = drop_sections(raw)
+        text = strip_brackets(text)
+        text = normalize_whitespace(text)
+
+        score = sentiment_scores(text)
+
+        print(f"{title:35}  Sentiment Score = {score:.4f}")
+
+
+# Run optional step:
+run_sentiment_analysis()
+
+
+
+
