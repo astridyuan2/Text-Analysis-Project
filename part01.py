@@ -10,10 +10,10 @@ import os, json, re
 
 # Define topics and paths of the text analysis project
 topics = [
-    "Penélope Cruz",
-    "Pedro Almodóvar",
-    "Spanish cinema",
-    "Female representation in film"
+    "Climate change",
+    "Global warming controversy",
+    "Fossil fuel industry",
+    "Environmental movement"
 ]
 
 downloads_dict = "data/downloads"   # where JSON pages will be stored
