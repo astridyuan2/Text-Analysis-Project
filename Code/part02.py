@@ -1,12 +1,10 @@
-import os, re, nltk
-from nltk.corpus import stopwords as nltk_stopwords
+import os, re, math, nltk
 from collections import Counter
-
-# import topics and fetch_page from your Part 1 module 
-from part01 import topics, fetch_page
-
-# ensure stopwords are available (no-op if already downloaded)
+from nltk.corpus import stopwords as nltk_stopwords
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from Code.fetch_data import topics, fetch_page
 nltk.download("stopwords", quiet=True)
+nltk.download("vader_lexicon", quiet=True)
 
 ### Text Processing and Cleaning
 word_pattern = re.compile(r"[a-zA-Z']+")
@@ -36,8 +34,6 @@ def tokenize(text):
     """lowercase + extract alphabetic tokens"""
     return word_pattern.findall(text.lower())
 
-
-
 ### Part 2.2 Stopword Removal
 def load_stopwords():
     """
@@ -60,7 +56,6 @@ def remove_stopwords(tokens, stopwords_list):
         if t not in stopwords:
             cleaned.append(t)
     return cleaned
-
 
 ### Pipeline step for part 2
 def clean_and_tokenize():
@@ -94,9 +89,6 @@ def clean_and_tokenize():
 
     return cleaned_tokens
 
-
-
-
 ### Part 2.3 Word Frequency Analysis
 def count_words(tokens):
     """Build a frequency dictionary (word -> count)."""
@@ -121,7 +113,6 @@ def print_most_common(hist, num=20):
     for freq, word in t[:num]:
         print(f"{word}\t{freq}")
 
-
 def run_frequency_test():
     cleaned_tokens = clean_and_tokenize()
     hist = count_words(cleaned_tokens)
@@ -129,19 +120,15 @@ def run_frequency_test():
     print("\nTop 20 Most Frequent Words (after cleaning + stopwords removed):\n")
     print_most_common(hist, num=20)
 
-# run_frequency_test()
-
-
-
 ## TFIDF test - consulted by ChatGPT and my learning from QTM RStudio code
-import math
-from part01 import topics, fetch_page
-from collections import Counter
-
-def document_tokens():
+def document_tokens(separate=True):
     """
-    Fetch and clean each page separately so each one becomes a document.
-    Returns a list of token-lists, one per topic.
+    Fetch and clean pages.
+    Args:
+        separate (bool): If True, return list of token lists (one per document).
+                         If False, return a single combined list of tokens.
+    Returns:
+        list: Either list-of-lists (separate=True) or one flat list (separate=False).
     """
     docs = []
     for title in topics:
@@ -152,8 +139,12 @@ def document_tokens():
         tokens = tokenize(text)
         tokens = remove_stopwords(tokens, load_stopwords())
         docs.append(tokens)
-    return docs
 
+    if separate:
+        return docs
+    else:
+        # flatten into one combined list
+        return [t for doc in docs for t in doc]
 
 def compute_tf(doc_tokens):
     """
@@ -186,7 +177,6 @@ def compute_idf(doc_tokens):
         idf[word] = math.log(num_docs / docs_containing)
     return idf
 
-
 def compute_tfidf(tf_list, idf):
     """
     Compute TF-IDF scores:
@@ -201,7 +191,6 @@ def compute_tfidf(tf_list, idf):
         tfidf_list.append(doc_tfidf)
     return tfidf_list
 
-
 def print_top_tfidf(tfidf_list, num=10):
     """
     Print top TF-IDF words for each document.
@@ -212,7 +201,6 @@ def print_top_tfidf(tfidf_list, num=10):
         for word, score in sorted_words[:num]:
             print(f"{word:15}  {score:.4f}")
 
-
 def run_tfidf():
     docs = document_tokens()
     tf_list = compute_tf(docs)
@@ -220,32 +208,7 @@ def run_tfidf():
     tfidf_list = compute_tfidf(tf_list, idf)
     print_top_tfidf(tfidf_list, num=10)
 
-
-# # Run it:
-# run_tfidf()
-
-
-
-
-
-
 ### Part 2.4 Computing Summary Statistics 
-def document_tokens_separate():
-    """
-    Fetch + clean pages but KEEP each as a separate document.
-    Returns list-of-lists: [tokens_doc1, tokens_doc2, ...]
-    """
-    docs = []
-    for title in topics:
-        raw = fetch_page(title)
-        text = drop_sections(raw)
-        text = strip_brackets(text)
-        text = normalize_whitespace(text)
-        tokens = tokenize(text)
-        tokens = remove_stopwords(tokens, load_stopwords())
-        docs.append(tokens)
-    return docs
-
 
 def top_k_words(tokens, k=20): 
     """Return the top-k most frequent words in one list of tokens."""
@@ -255,7 +218,6 @@ def top_k_words(tokens, k=20):
     items = sorted(hist.items(), key=lambda x: (-x[1], x[0]))
     return items[:k]
 
-
 def avg_word_length(tokens):
     """Average length of words in one document."""
     if not tokens:
@@ -263,13 +225,11 @@ def avg_word_length(tokens):
     total_chars = sum(len(t) for t in tokens)
     return total_chars / len(tokens)
 
-
 def type_token_ratio(tokens):
     """Vocabulary richness: unique words / total words."""
     if not tokens:
         return 0
     return len(set(tokens)) / len(tokens)
-
 
 def words_unique_to_document(all_docs):
     """
@@ -283,9 +243,8 @@ def words_unique_to_document(all_docs):
         unique_words.append(s - others)
     return unique_words
 
-
 def run_summary_statistics():  # - consulted by ChatGPT
-    docs = document_tokens_separate()
+    docs = document_tokens()
 
     print("\n===== PART 4: SUMMARY STATISTICS =====\n")
 
@@ -312,15 +271,7 @@ def run_summary_statistics():  # - consulted by ChatGPT
         sample = list(uw)[:10]    # just show a few
         print(f"{title:30}  {sample}")
 
-
-# # Run Part 4
-# run_summary_statistics()
-
-
-
-
 ### Part 2.5 Visualizations
-
 # A simple ASCII bar chart
 def ascii_bar_chart(freq_pairs, width=40):
     """
@@ -335,27 +286,18 @@ def ascii_bar_chart(freq_pairs, width=40):
         bar = "#" * int((count / max_count) * width)
         print(f"{word:15} | {bar} {count}")
 
-
 def visualize_top_words_per_document(k=10):
     """
     For each document (each Wikipedia page), compute its top-k words
     and display an ASCII bar chart.
     """
-    docs = document_tokens_separate()  # reuse function from Part 4
+    docs = document_tokens()  # reuse function from Part 4
 
     print("\n===== PART 2.5: VISUALIZATION =====\n")
     for title, tokens in zip(topics, docs):
         print(f"\nTop {k} words in: {title}\n")
         top_words = top_k_words(tokens, k=k)
         ascii_bar_chart(top_words, width=40)
-
-
-# # Run the visualization
-# visualize_top_words_per_document(k=10)
-
-
-
-
 
 ### Advanced Visualizations with Matplotlib and WordCloud - consulted by ChatGPT and R code
 def ensure_dir(path):
@@ -432,15 +374,7 @@ def run_visualizations():
     # 3) Word cloud
     plot_wordcloud_from_hist(hist, outpath="data/visuals/wordcloud.png")
 
-# run_visualizations()
-
-
 # ========= OPTIONAL TECHNIQUE: SENTIMENT ANALYSIS (VADER) =========
-
-import nltk
-nltk.download("vader_lexicon", quiet=True)
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-
 def sentiment_scores(text): # - consulted by ChatGPT
     """
     Compute overall compound sentiment score (-1 to +1).
@@ -461,11 +395,6 @@ def run_sentiment_analysis(): # - consulted by ChatGPT
         score = sentiment_scores(text)
 
         print(f"{title:35}  Sentiment Score = {score:.4f}")
-
-
-# # Run optional step:
-# run_sentiment_analysis()
-
 
 def main():
     """
@@ -502,7 +431,6 @@ def main():
         run_sentiment_analysis()
     except Exception as e:
         print("[sentiment skipped]", e)
-
 
 if __name__ == "__main__":
     main()
