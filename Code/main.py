@@ -1,10 +1,11 @@
-import os, re, math, nltk
+import os, re, math, nltk, openai
 from collections import Counter
 from nltk.corpus import stopwords as nltk_stopwords
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from Code.fetch_data import topics, fetch_page
 nltk.download("stopwords", quiet=True)
 nltk.download("vader_lexicon", quiet=True)
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 ### Text Processing and Cleaning
 word_pattern = re.compile(r"[a-zA-Z']+")
@@ -396,6 +397,40 @@ def run_sentiment_analysis(): # - consulted by ChatGPT
 
         print(f"{title:35}  Sentiment Score = {score:.4f}")
 
+def summarize_with_openai(text, model="gpt-4o-mini"):
+    """
+    Use OpenAI API to summarize text.
+    
+    Args:
+        text (str): Input text to summarize.
+        model (str): OpenAI model name (default: gpt-4o-mini).
+    Returns:
+        str: Summary text from the OpenAI API.
+    """
+    try:
+        response = openai.ChatCompletion.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant for text analysis."},
+                {"role": "user", "content": f"Summarize the following text:\n\n{text}"}
+            ],
+            max_tokens=300
+        )
+        return response["choices"][0]["message"]["content"]
+    except Exception as e:
+        return f"[OpenAI summary failed: {e}]"
+
+def run_openai_summary():
+    """
+    Run OpenAI summarization on each document.
+    """
+    docs = document_tokens(separate=True)  # keep each page separate
+    for title, tokens in zip(topics, docs):
+        # limit length so API call is manageable
+        text = " ".join(tokens[:1000])
+        summary = summarize_with_openai(text)
+        print(f"\nOpenAI Summary for {title}:\n{summary}\n")
+
 def main():
     """
     entry point for Part 2:
@@ -431,6 +466,19 @@ def main():
         run_sentiment_analysis()
     except Exception as e:
         print("[sentiment skipped]", e)
+    
+    print("\n===== OPTIONAL: SENTIMENT ANALYSIS (VADER) =====")
+    try:
+        run_sentiment_analysis()
+    except Exception as e:
+        print("[sentiment skipped]", e)
+
+    print("\n===== OPTIONAL: OPENAI SUMMARIZATION =====")
+    try:
+        run_openai_summary()
+    except Exception as e:
+        print("[openai summary skipped]", e)
+
 
 if __name__ == "__main__":
     main()
