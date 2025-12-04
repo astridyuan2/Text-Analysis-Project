@@ -47,9 +47,7 @@ def load_stopwords():
     return [w.lower() for w in nltk_stopwords.words("english")]
 
 def remove_stopwords(tokens, stopwords_list):
-    """
-    Filter out tokens that appear in the stopword set.
-    """
+    """Filter out tokens that appear in the stopword set."""
     stopwords = set(stopwords_list)   # convert once for speed!
     
     cleaned = []
@@ -99,9 +97,7 @@ def count_words(tokens):
     return hist
 
 def most_common(hist):
-    """
-    Convert dict to list of (freq, word) pairs, sorted by frequency desc.
-    """
+    """ Convert dict to list of (freq, word) pairs, sorted by frequency desc."""
     items = []
     for word, freq in hist.items():
         items.append((freq, word))
@@ -123,14 +119,7 @@ def run_frequency_test():
 
 ## TFIDF test - consulted by ChatGPT and my learning from QTM RStudio code
 def document_tokens(separate=True):
-    """
-    Fetch and clean pages.
-    Args:
-        separate (bool): If True, return list of token lists (one per document).
-                         If False, return a single combined list of tokens.
-    Returns:
-        list: Either list-of-lists (separate=True) or one flat list (separate=False).
-    """
+    """Fetch and clean pages."""
     docs = []
     for title in topics:
         raw = fetch_page(title)
@@ -148,10 +137,8 @@ def document_tokens(separate=True):
         return [t for doc in docs for t in doc]
 
 def compute_tf(doc_tokens):
-    """
-    Compute term frequency (TF) for each document.
-    Returns a list of dicts: one frequency dictionary per document.
-    """
+    """Compute term frequency (TF) for each document.
+    Returns a list of dicts: one frequency dictionary per document."""
     tf_list = []
     for tokens in doc_tokens:
         total = len(tokens)
@@ -164,9 +151,7 @@ def compute_tf(doc_tokens):
 
 
 def compute_idf(doc_tokens):
-    """
-    Compute inverse document frequency across documents.
-    """
+    """Compute inverse document frequency across documents."""
     num_docs = len(doc_tokens)
     idf = {}
     # count in how many documents each term appears
@@ -181,7 +166,6 @@ def compute_idf(doc_tokens):
 def compute_tfidf(tf_list, idf):
     """
     Compute TF-IDF scores:
-    For each document, multiply its TF by the IDF.
     Returns a list of dicts (one TF-IDF map per document).
     """
     tfidf_list = []
@@ -193,9 +177,7 @@ def compute_tfidf(tf_list, idf):
     return tfidf_list
 
 def print_top_tfidf(tfidf_list, num=10):
-    """
-    Print top TF-IDF words for each document.
-    """
+    """Print top TF-IDF words for each document."""
     for title, tfidf in zip(topics, tfidf_list):
         print(f"\nTop TF-IDF terms for: {title}\n")
         sorted_words = sorted(tfidf.items(), key=lambda x: x[1], reverse=True)
@@ -233,10 +215,7 @@ def type_token_ratio(tokens):
     return len(set(tokens)) / len(tokens)
 
 def words_unique_to_document(all_docs):
-    """
-    Words that appear in one document ONLY.
-    Returns list: one set of unique words per document.
-    """
+    """Words that appear in one document ONLY. Returns list: one set of unique words per document."""
     doc_sets = [set(d) for d in all_docs]
     unique_words = []
     for i, s in enumerate(doc_sets):
@@ -275,10 +254,7 @@ def run_summary_statistics():  # - consulted by ChatGPT
 ### Part 2.5 Visualizations
 # A simple ASCII bar chart
 def ascii_bar_chart(freq_pairs, width=40):
-    """
-    Print a horizontal ASCII bar chart for (word, count) pairs.
-    width controls scale of the longest bar.
-    """
+    """Print a horizontal ASCII bar chart for (word, count) pairs.width controls scale of the longest bar."""
     if not freq_pairs:
         print("(no data)")
         return
@@ -331,7 +307,6 @@ def plot_bar_topk(pairs, title="Top 20 Words", outpath="data/visuals/top20_bar.p
     counts = [c for _, c in pairs]
 
     plt.figure(figsize=(10, 6))
-    # horizontal bar so labels are readable
     y = range(len(words))
     plt.barh(y, counts)
     plt.yticks(y, words)
@@ -355,12 +330,7 @@ def plot_wordcloud_from_hist(hist, outpath="data/visuals/wordcloud.png"):
 
 def run_visualizations():
     """
-    Uses your existing pipeline:
-      - cleans + tokenizes
-      - builds frequency histogram
-      - prints ASCII bar chart
-      - saves matplotlib bar chart
-      - saves word cloud
+    Uses existing pipeline:
     """
     cleaned_tokens = clean_and_tokenize()
     hist = count_words(cleaned_tokens)
@@ -400,12 +370,6 @@ def run_sentiment_analysis(): # - consulted by ChatGPT
 def summarize_with_openai(text, model="gpt-4o-mini"):
     """
     Use OpenAI API to summarize text.
-    
-    Args:
-        text (str): Input text to summarize.
-        model (str): OpenAI model name (default: gpt-4o-mini).
-    Returns:
-        str: Summary text from the OpenAI API.
     """
     try:
         response = openai.ChatCompletion.create(
@@ -478,7 +442,6 @@ def main():
         run_openai_summary()
     except Exception as e:
         print("[openai summary skipped]", e)
-
 
 if __name__ == "__main__":
     main()
